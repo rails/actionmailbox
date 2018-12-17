@@ -10,11 +10,11 @@ module Rails
       check_class_collision suffix: "Mailbox"
 
       def create_mailbox_file
-        template "mailbox.rb", File.join("app/mailboxes", class_path, "#{file_name}_mailbox.rb")
-
         in_root do
-          if behavior == :invoke && !File.exist?(application_mailbox_file_name)
+          if behavior == :invoke && file_name == 'application'
             template "application_mailbox.rb", application_mailbox_file_name
+          else
+            template "mailbox.rb", File.join("app/mailboxes", class_path, "#{file_name}_mailbox.rb")
           end
         end
       end

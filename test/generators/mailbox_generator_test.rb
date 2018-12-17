@@ -17,7 +17,11 @@ class MailboxGeneratorTest < Rails::Generators::TestCase
       assert_match(/def process/, mailbox)
       assert_no_match(%r{# routing /something/i => :somewhere}, mailbox)
     end
+  end
 
+  def test_application_mailbox_is_created
+    Object.send :remove_const, :ApplicationMailbox
+    run_generator ['application']
     assert_file "app/mailboxes/application_mailbox.rb" do |mailbox|
       assert_match(/class ApplicationMailbox < ActionMailbox::Base/, mailbox)
       assert_match(%r{# routing /something/i => :somewhere}, mailbox)
